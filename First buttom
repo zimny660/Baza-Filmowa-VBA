@@ -1,0 +1,133 @@
+
+
+
+Private Sub cb_gatunek_Change()
+
+End Sub
+
+ Private Sub cb_wyswietlfilmy_Click()
+
+Dim csv_b As Worksheet
+Dim ws As Worksheet
+
+Dim FilePath As String, wiersz As String
+Dim licznik As Integer
+Dim MyArray() As String, MyString As String, i As Variant, W As Integer
+ThisWorkbook.Activate
+ActiveSheet.Columns("A:I").ClearContents
+
+ FilePath = ThisWorkbook.Path & "\data.csv"
+ 
+ 
+Set ws = ThisWorkbook.Sheets("Filtrowanie")
+
+If cb_gatunek.Value <> "" And cb_rokprodukcji.Value <> "" Then
+    licznik = 0
+    Application.ScreenUpdating = False
+    ws.[A1].Select
+    Open FilePath For Input As #1
+    While Not EOF(1)
+        Line Input #1, wiersz
+        MyString = wiersz
+        MyArray = Split(MyString, ";")
+        If MyArray(0) <> "Column 3" Then
+            If MyArray(0) = "tconst" Then
+        
+                Cells(ActiveCell.Row + licznik, 1) = MyArray(0)
+                Cells(ActiveCell.Row + licznik, 2) = MyArray(1)
+                Cells(ActiveCell.Row + licznik, 3) = MyArray(2)
+                Cells(ActiveCell.Row + licznik, 4) = MyArray(3)
+                Cells(ActiveCell.Row + licznik, 5) = MyArray(4)
+                Cells(ActiveCell.Row + licznik, 6) = MyArray(5)
+                Cells(ActiveCell.Row + licznik, 7) = MyArray(6)
+                Cells(ActiveCell.Row + licznik, 8) = MyArray(7)
+                Cells(ActiveCell.Row + licznik, 9) = MyArray(8)
+          
+                licznik = licznik + 1
+            ElseIf InStr(1, MyArray(8), cb_gatunek.Value) And MyArray(5) = cb_rokprodukcji.Value Then
+            
+                Cells(ActiveCell.Row + licznik, 1) = MyArray(0)
+                Cells(ActiveCell.Row + licznik, 2) = MyArray(1)
+                Cells(ActiveCell.Row + licznik, 3) = MyArray(2)
+                Cells(ActiveCell.Row + licznik, 4) = MyArray(3)
+                Cells(ActiveCell.Row + licznik, 5) = MyArray(4)
+                Cells(ActiveCell.Row + licznik, 6) = MyArray(5)
+                Cells(ActiveCell.Row + licznik, 7) = MyArray(6)
+                Cells(ActiveCell.Row + licznik, 8) = MyArray(7)
+                Cells(ActiveCell.Row + licznik, 9) = MyArray(8)
+          
+            licznik = licznik + 1
+           End If
+        End If
+         
+        
+    Wend
+    Close #1
+    Application.ScreenUpdating = True
+    Unload Me
+Else
+    MsgBox "Pola nie mogą być puste"
+End If
+
+
+
+
+
+
+
+
+
+
+End Sub
+
+
+Private Sub UserForm_Initialize()
+Dim ws As Worksheet
+Dim i As Long
+Set ws = ThisWorkbook.Sheets("Filtrowanie")
+
+
+ws.Columns("A:I").ClearContents
+
+
+cb_gatunek.Clear
+cb_rokprodukcji.Clear
+
+cb_gatunek.AddItem "Action"
+cb_gatunek.AddItem "Adult"
+cb_gatunek.AddItem "Adventure"
+cb_gatunek.AddItem "Animation"
+cb_gatunek.AddItem "Biography"
+cb_gatunek.AddItem "Comedy"
+cb_gatunek.AddItem "Crime"
+cb_gatunek.AddItem "Documentary"
+cb_gatunek.AddItem "Drama"
+cb_gatunek.AddItem "Family"
+cb_gatunek.AddItem "Fantasy"
+cb_gatunek.AddItem "Film-Noir"
+cb_gatunek.AddItem "Game-Show"
+cb_gatunek.AddItem "History"
+cb_gatunek.AddItem "Horror"
+cb_gatunek.AddItem "Music"
+cb_gatunek.AddItem "Musical"
+cb_gatunek.AddItem "Mystery"
+cb_gatunek.AddItem "News"
+cb_gatunek.AddItem "Reality-TV"
+cb_gatunek.AddItem "Romance"
+cb_gatunek.AddItem "Sci-Fi"
+cb_gatunek.AddItem "Short"
+cb_gatunek.AddItem "Sport"
+cb_gatunek.AddItem "Talk-Show"
+cb_gatunek.AddItem "Thriller"
+cb_gatunek.AddItem "War"
+cb_gatunek.AddItem "Western"
+cb_gatunek.AddItem "\N"
+
+For i = 1888 To 2023
+cb_rokprodukcji.AddItem i
+Next i
+
+cb_rokprodukcji.AddItem "/N"
+
+
+End Sub
